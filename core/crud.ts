@@ -3,8 +3,10 @@ import { v4 as uuid } from 'uuid';
 // const fs = require("fs"); - Como js importa
 const DB_FILE_PATH = "./core/db";
 
+type UUID = string;
+
 interface Todo {
-    id: string;
+    id: UUID;
     date: string;
     content: string;
     done: boolean;
@@ -39,7 +41,7 @@ function read(): Array<Todo> {
     return db.todos;
 }
 
-function update(id: string, partialTodo: Partial<Todo>): Todo {
+function update(id: UUID, partialTodo: Partial<Todo>): Todo {
     let updatedTodo;
     const todos = read();
     todos.forEach((currentTodo) => {
@@ -60,10 +62,25 @@ function update(id: string, partialTodo: Partial<Todo>): Todo {
     return updatedTodo;
 }
 
-function updateContentById(id: string, content: string): Todo { // atalho
+function updateContentById(id: UUID, content: string): Todo { // atalho
     return update(id, {
         content,
     })
+}
+
+function deleteById(id: UUID) {
+    const todos = read();
+    
+    const todosWithoutOne = todos.filter((todo) => {
+        if(todo.id === id) {
+            return false;
+        }
+        return true;
+    });
+
+    fs.writeFileSync(DB_FILE_PATH, JSON.stringify({
+        todos: todosWithoutOne,
+    }, null, 2));
 }
 
 function CLEAR_DB() {
@@ -73,10 +90,13 @@ function CLEAR_DB() {
 // [SIMULATION]
 CLEAR_DB();
 create("Primeira TODO");
-create("Segunda TODO");
-const terceiraTodo = create("Terceira TODO");
+const secondTodo = create("Segunda TODO");
+const thirdTodo = create("Terceira TODO");
+deleteById(secondTodo.id);
 // update(terceiraTodo.id, {
 //     content: "Terceira TODO com novo content"
 // });
-updateContentById(terceiraTodo.id, "Atualizada!");
-console.log(read());
+updateContentById(thirdTodo.id, "Atualizada!");
+const todos = read();
+console.log(todos);
+console.log(todos.length);
