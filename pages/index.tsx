@@ -1,4 +1,4 @@
-import { GlobalStyles } from "../src/themes/GlobalStyles"
+import { GlobalStyles } from "@ui/themes/GlobalStyles"
 
 // const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
 const bg = "/bg.jpeg";
