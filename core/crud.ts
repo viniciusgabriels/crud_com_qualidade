@@ -6,22 +6,22 @@ const DB_FILE_PATH = "./core/db";
 
 type UUID = string;
 
-interface Todo {
+interface ITodo {
   id: UUID;
   date: string;
   content: string;
   done: boolean;
 }
 
-function create(content: string): Todo {
-  const todo: Todo = {
+function create(content: string): ITodo {
+  const todo: ITodo = {
     id: uuid(),
     date: new Date().toISOString(),
     content: content,
     done: false,
   };
 
-  const todos: Todo[] = [...read(), todo];
+  const todos: ITodo[] = [...read(), todo];
 
   // Precisa salvar o content no sistema
   fs.writeFileSync(
@@ -37,7 +37,7 @@ function create(content: string): Todo {
   return todo;
 }
 
-export function read(): Array<Todo> {
+export function read(): Array<ITodo> {
   const dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
   const db = JSON.parse(dbString || "{}");
   if (!db.todos) {
@@ -46,7 +46,7 @@ export function read(): Array<Todo> {
   return db.todos;
 }
 
-function update(id: UUID, partialTodo: Partial<Todo>): Todo {
+function update(id: UUID, partialTodo: Partial<ITodo>): ITodo {
   let updatedTodo;
   const todos = read();
   todos.forEach((currentTodo) => {
@@ -74,7 +74,7 @@ function update(id: UUID, partialTodo: Partial<Todo>): Todo {
   return updatedTodo;
 }
 
-function updateContentById(id: UUID, content: string): Todo {
+function updateContentById(id: UUID, content: string): ITodo {
   // atalho
   return update(id, {
     content,
