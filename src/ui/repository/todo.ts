@@ -13,7 +13,9 @@ function get({
 }: ITodoRepositoryGetParams): Promise<ITodoRepositoryGetOutput> {
   return fetch("/api/todos").then(async (todosFromServer) => {
     const todosString = await todosFromServer.text();
-    const todosFromServerJson = JSON.parse(todosString).todos;
+    const todosFromServerJson = parseTodosFromServer(
+      JSON.parse(todosString)
+    ).todos;
 
     const ALL_TODOS = todosFromServerJson;
     // Receita de bolo paginação
@@ -40,4 +42,38 @@ interface ITodo {
   content: string;
   date: Date;
   done: boolean;
+}
+
+function parseTodosFromServer(responseBody: unknown): { todos: Array<ITodo> } {
+  if (
+    responseBody !== null &&
+    typeof responseBody === "object" &&
+    "todos" in responseBody &&
+    Array.isArray(responseBody.todos)
+  ) {
+    return {
+      todos: responseBody.todos.map((todo: unknown) => {
+        if (todo === null && typeof todo !== "object") {
+          throw new Error("Invalid todo from API");
+        }
+
+        const { id, content, done, date } = todo as {
+          id: string;
+          content: string;
+          done: string;
+          date: string;
+        };
+        return {
+          id,
+          content,
+          done: String(done).toLowerCase() === "true",
+          date: new Date(date),
+        };
+      }),
+    };
+  }
+
+  return {
+    todos: [],
+  };
 }
