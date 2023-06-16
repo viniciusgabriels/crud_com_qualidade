@@ -1,13 +1,15 @@
 import { todoRepository } from "@ui/repository/todo";
 
 interface ITodoControllerGetParams {
-  page?: number;
+  page: number;
 }
 
-async function get({ page }: ITodoControllerGetParams = {}) {
+async function get(params: ITodoControllerGetParams) {
+  // eslint-disable-next-line no-console
+  console.log(params);
   return todoRepository.get({
-    page: page || 1,
-    limit: 10,
+    page: params.page,
+    limit: 2,
   });
 }
 
