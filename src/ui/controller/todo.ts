@@ -5,8 +5,6 @@ interface ITodoControllerGetParams {
 }
 
 async function get(params: ITodoControllerGetParams) {
-  // eslint-disable-next-line no-console
-  console.log(params);
   return todoRepository.get({
     page: params.page,
     limit: 2,
