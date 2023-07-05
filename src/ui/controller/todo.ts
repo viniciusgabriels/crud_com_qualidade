@@ -24,7 +24,32 @@ function filterTodosByContent<Todo>(
   return homeTodos;
 }
 
+interface ITodoControllerCreateParams {
+  content?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSuccess: (todo: any) => void;
+  onError: () => void;
+}
+
+function create({ content, onSuccess, onError }: ITodoControllerCreateParams) {
+  //fail fast
+  if (!content) {
+    onError();
+    return;
+  }
+  //vai vir do Repository
+  const todo = {
+    id: "123456",
+    content,
+    date: new Date(),
+    done: false,
+  };
+
+  onSuccess(todo);
+}
+
 export const todoController = {
   get,
   filterTodosByContent,
+  create,
 };
