@@ -17,7 +17,7 @@ function get({
 }: ITodoRepositoryGetParams = {}): ITodoRepositoryGetOutput {
   const currentPage = page || 1;
   const currentLimit = limit || 10;
-  const ALL_TODOS = read();
+  const ALL_TODOS = read().reverse();
 
   // Receita de bolo paginação
   const startIndex = (currentPage - 1) * currentLimit;
