@@ -64,14 +64,6 @@ export const todoRepository = {
   createByContent,
 };
 
-// Model ou Schema
-// interface ITodo {
-//   id: string;
-//   content: string;
-//   date: Date;
-//   done: boolean;
-// }
-
 function parseTodosFromServer(responseBody: unknown): {
   total: number;
   pages: number;
