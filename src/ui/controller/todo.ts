@@ -50,8 +50,35 @@ function create({ content, onSuccess, onError }: ITodoControllerCreateParams) {
     });
 }
 
+interface ITodoControllerToggleDoneParams {
+  id: string;
+  updateTodoOnScreen: () => void;
+  onError: () => void;
+}
+
+function toggleDone({
+  id,
+  updateTodoOnScreen,
+  onError,
+}: ITodoControllerToggleDoneParams) {
+  // Optimistic Update:
+  // updateTodoOnScreen();
+  // todoRepository.toggleDone(id);
+
+  // Update Real:
+  todoRepository
+    .toggleDone(id)
+    .then(() => {
+      updateTodoOnScreen();
+    })
+    .catch(() => {
+      onError();
+    });
+}
+
 export const todoController = {
   get,
   filterTodosByContent,
   create,
+  toggleDone,
 };

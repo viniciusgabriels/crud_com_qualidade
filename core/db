@@ -46,13 +46,13 @@
       "id": "4c2e751f-413d-4e71-8331-c3865450debb",
       "date": "2023-07-07T18:06:07.065Z",
       "content": "última TODO",
-      "done": false
+      "done": true
     },
     {
       "id": "29751dcb-d9f7-4200-98e9-5fc272cd007f",
       "date": "2023-07-07T18:24:31.179Z",
       "content": "Teste novo",
-      "done": true
+      "done": false
     }
   ]
 }
