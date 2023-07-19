@@ -144,11 +144,29 @@ function HomePage() {
                   </td>
                   <td>{todo.id.substring(0, 4)}</td>
                   <td>
-                    {!todo.content && todo.content}
-                    {todo.content && <s>{todo.content}</s>}
+                    {!todo.done && todo.content}
+                    {todo.done && <s>{todo.content}</s>}
                   </td>
                   <td align="right">
-                    <button data-type="delete">Apagar</button>
+                    <button
+                      data-type="delete"
+                      onClick={function handlerClick() {
+                        todoController
+                          .deleteById(todo.id)
+                          .then(() => {
+                            setTodos((currentTodos) => {
+                              return currentTodos.filter((currentTodo) => {
+                                return currentTodo.id !== todo.id ?? false;
+                              });
+                            });
+                          })
+                          .catch(() => {
+                            console.error("Failed to delete");
+                          });
+                      }}
+                    >
+                      Apagar
+                    </button>
                   </td>
                 </tr>
               );
